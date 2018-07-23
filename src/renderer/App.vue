@@ -2,12 +2,13 @@
     <v-app>
         <v-toolbar 
           dark
-          color="primary">
+          color="primary"
+          fixed>
             <v-toolbar-side-icon v-on:click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>{{ title }}</v-toolbar-title>
         </v-toolbar>
         <v-navigation-drawer v-model="drawer"
-        absolute
+        fixed
         temporary>
           <v-toolbar flat>
             <v-list>
@@ -50,7 +51,7 @@
 
           </v-list>
         </v-navigation-drawer>
-        <router-view class="secondary lighten-3"></router-view>
+        <router-view class="grey lighten-4 mt-5"></router-view>
     </v-app>
 </template>
 <script>

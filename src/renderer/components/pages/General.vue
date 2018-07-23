@@ -4,7 +4,8 @@
         fluid
         grid-list-lg
       >
-      <h1 class="my-2">Welcome {{ name }}</h1>
+        <h1 class="my-2">Welcome {{ name }}</h1>
+        <v-divider class="mb-4"></v-divider>
         <v-layout row wrap>
           <v-flex md4 sm4 xs12>
             <v-card color="cyan darken-2" class="white--text">
