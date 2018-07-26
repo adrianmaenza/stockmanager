@@ -1,20 +1,21 @@
 <template>
     <v-container fluid>
+        
         <h1 class="my-2">Products</h1>
         <v-divider class="mb-4"></v-divider>
         <v-data-table
             :headers="headers"
             :items="desserts"
             hide-actions
-            class="elevation-1"
+            class="elevation-2"
         >
             <template slot="items" slot-scope="props">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.calories }}</td>
-            <td class="text-xs-right">{{ props.item.fat }}</td>
-            <td class="text-xs-right">{{ props.item.carbs }}</td>
-            <td class="text-xs-right">{{ props.item.protein }}</td>
-            <td class="text-xs-right">{{ props.item.iron }}</td>
+              <td>{{ props.item.name }}</td>
+              <td class="text-xs-right">{{ props.item.calories }}</td>
+              <td class="text-xs-right">{{ props.item.fat }}</td>
+              <td class="text-xs-right">{{ props.item.carbs }}</td>
+              <td class="text-xs-right">{{ props.item.protein }}</td>
+              <td class="text-xs-right">{{ props.item.iron }}</td>
             </template>
         </v-data-table>
         <v-btn
@@ -25,15 +26,19 @@
               right
               color="primary"
               class="glare"
+              @click.stop="addProduct"
             >
               <v-icon style="line-height: 56px">add</v-icon>
             </v-btn>
     </v-container>
 </template>
 <script>
+const electron = require("electron");
+const {ipcRenderer} = electron;
   export default {
     data () {
       return {
+        dialog: false,
         headers: [
           {
             text: 'Dessert (100g serving)',
@@ -139,6 +144,14 @@
             iron: '6%'
           }
         ]
+      }
+    },
+    methods: {
+      addProduct: function () {
+
+        // ipcRenderer.send("product:add", {name: 'bread'});
+        this.$router.push('/add-product');
+
       }
     }
   }

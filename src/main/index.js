@@ -1,34 +1,49 @@
-const electron = require("electron");
-const bcrypt = require('bcryptjs'); 
-const DataStore = require('nedb');
+const electron = require("electron")
+const bcrypt = require('bcryptjs')
+const database = require('./database')
 
-const { app, BrowserWindow, ipcMain } = electron;
-const salt = bcrypt.genSaltSync(10);
-const hash = bcrypt.hashSync('Qazwsx_89', salt);
-const db = new DataStore({ filename: '../storage/database/users'});
+import * as path from 'path'
+import {format as formatUrl} from 'url'
 
-db.loadDatabase( (err) => console.log('Databse Loaded'));
+const { app, BrowserWindow, ipcMain } = electron
+const {users, products} = database
 
-db.find({email: 'adrianmaenza@gmail.com'}, (err, data) => {
-    let user = data[0];
-    console.log(user);
-    // // update password
-    // db.update({email: user.email},{password: hash}, {}, (err) => console.log(err));
- });
+const salt = bcrypt.genSaltSync(10)
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
-
-let window;
+let mainWindow;
+let addProductWindow;
  
 app.on('ready', () => {
-    window = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         // frame: false
     });
 
     // Set Title
-    window.setTitle("Stock Manager");
+    mainWindow.setTitle("Stock Manager");
 
-    // get that funny url from electron-webpack
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+    if(isDevelopment){
+        mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+    } else {
+        mainWindow.loadURL(
+            formatUrl({
+                pathname: path.join(__dirname, 'index.html'),
+                protocol: 'file',
+                slashes: true
+            })
+        )
+    }
+
+});
+
+// Add product
+ipcMain.on('product:save', (event, data) => {
+
+    products.insert(data, (err, data) => {
+        if (!err){
+            mainWindow.webContents.send('product:saved', true);
+        }
+    });
 
 });
 
