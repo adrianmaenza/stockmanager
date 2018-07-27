@@ -12,7 +12,7 @@ const salt = bcrypt.genSaltSync(10)
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let mainWindow;
-let addProductWindow;
+let addWindow;
  
 app.on('ready', () => {
     mainWindow = new BrowserWindow({

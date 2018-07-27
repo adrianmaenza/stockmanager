@@ -63,10 +63,11 @@
 <script>
 const electron = require('electron');
 const {ipcRenderer} = electron;
-
+let router;
 ipcRenderer.on('product:saved', (data) => {
     console.log(`Product saved ${data}`);
     // redirect to products page
+    router.push({path: '/products'});
 });
 
 const instance = {
@@ -101,6 +102,9 @@ const instance = {
             ipcRenderer.send('product:save', product);
         }
 
+    }, created(){
+        router = this.$router;
+        alert();
     }
 }
 
